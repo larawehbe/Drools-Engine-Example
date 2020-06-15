@@ -1,0 +1,71 @@
+package rules
+import module.*
+
+rule "Announce constraints on quantites of a credit card" salience 8 
+when 
+	$c :Credit()
+then 	
+	System.out.println("\n'Announce min and max constraints on quantites of a credit card' Rule is activated ");
+	System.out.println("\n----------");
+	System.out.println("\nMinimum quantity : " + $c.getMinQty() + "\nMaximum quantity : " + $c.getMaxQty()+"\n");
+
+end
+
+rule "Is Credit card Balance Valid? ( Balance > Min quantity and Balance < Max Quantity) " // check if the balance is above the min quantity predefined
+salience 7
+when 
+	$c : Credit()
+then 
+System.out.println("\n'Is Credit card Balance Valid? ( Balance > Min quantity and Balance < Max Quantity) ' Rule is activated ");
+System.out.println("\n----------");
+	if($c.getUser().getBalance() > $c.getMinQty() &&  $c.getUser().getBalance() < $c.getMaxQty()  )
+		System.out.println("\n User " +$c.getUser().getName() + " can issue a prepaid card because the balance constraints are valid :).");
+	else if($c.getUser().getBalance() < $c.getMinQty())
+			System.out.println("\n User " + $c.getUser().getName()+" cannot issue a prepaid card because the balance available is below the minimum quantity accepted ! ");
+		else 
+			System.out.println("\n User " + $c.getUser().getName() + " cannot issue a prepaid card because the balance available is above the maximum quantity accepted !\n");
+end
+
+
+rule "Clarify the monthly fees of a credit card  " 
+when 
+	$c : Credit()
+then 
+	System.out.println("\n'Clarify the monthly fees of a credit card ' Rule is activated ");
+	System.out.println("\n----------");
+	System.out.println("\nYour monthly fees are 2% of your current balance, so as to say : " +$c.getMonthlyFees() + ".\n");
+end
+
+
+rule "Clarify withdrawls limits for a credit card" 
+when 
+	$c: Credit()
+then 
+	System.out.println("\n'Clarify withdrawls limits for a credit card' Rule is activated ");
+	System.out.println("\n----------");
+	System.out.println("\nFor security reasons, daily withdrawl ranges between 50$ to 500$ only.\n");
+end
+
+rule "Credit card summary" salience 6
+when 
+	$c: Credit()
+then 
+	System.out.println("\n'Clarify withdrawls limits for a prepaid card' Rule is activated ");
+	System.out.println("\n----------");
+	System.out.println("\nPrepaid card Details :");
+	System.out.println("\nUser : " + $c.getUser().getName());
+	System.out.println("\nPrepaid card id : " + $c.getId());
+	System.out.println("\nPrepaid card verification code cvv2 : " + $c.getCvv2());
+	System.out.println("\nCurrent balance : " + $c.getUser().getBalance());
+	System.out.println("\nMinimum Quantity accepted in the card's balance : " + $c.getMinQty());
+	System.out.println("\nMaximum Quantity accepted in the card's balance : " + $c.getMaxQty());
+	System.out.println("\nDaily withdrawls between 50$ and 500$. ");
+	System.out.println("\nFees per month : " + $c.getMonthlyFees()+"\n");
+	
+end
+
+
+
+
+
+

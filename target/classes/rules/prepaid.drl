@@ -1,0 +1,71 @@
+package rules
+import model.*
+
+rule "Announce min and max constraints on quantites of a prepaid card" salience 8 
+when 
+	$p : Prepaid()
+then 	
+	System.out.println("\n'Announce min and max constraints on quantites of a prepaid card' Rule is activated ");
+	System.out.println("\n----------");
+	System.out.println("\nMinimum quantity : " + $p.getMinQty() + "\nMaximum quantity : " + $p.getMaxQty()+"\n");
+
+end
+
+rule "Is Prepaid card Balance Valid? ( Balance > Min quantity and Balance < Max Quantity) " // check if the balance is above the min quantity predefined
+salience 7
+when 
+	$p : Prepaid()
+then 
+System.out.println("\n'Is Prepaid card Balance Valid? ( Balance > Min quantity and Balance < Max Quantity) ' Rule is activated ");
+System.out.println("\n----------");
+	if($p.getUser().getBalance() > $p.getMinQty() &&  $p.getUser().getBalance() < $p.getMaxQty()  )
+		System.out.println("\n User " +$p.getUser().getName() + " can issue a prepaid card because the balance constraints are valid :).");
+	else if($p.getUser().getBalance() < $p.getMinQty())
+			System.out.println("\n User " + $p.getUser().getName()+" cannot issue a prepaid card because the balance available is below the minimum quantity accepted ! ");
+		else 
+			System.out.println("\n User " + $p.getUser().getName() + " cannot issue a prepaid card because the balance available is above the maximum quantity accepted !\n");
+end
+
+
+rule "Clarify the loading limits for a prepaid card " 
+when 
+	$p : Prepaid()
+then 
+	System.out.println("\n'Clarify the loading limits for a prepaid card ' Rule is activated ");
+	System.out.println("\n----------");
+	System.out.println("\nDdaily, you can load only 300$ to your prepaid card. " );
+	System.out.println("\nMonthly, you can load only 2000$ to your prepaid card.\n");
+end
+
+
+rule "Clarify withdrawls limits for a prepaid card" 
+when 
+	$p: Prepaid()
+then 
+	System.out.println("\n'Clarify withdrawls limits for a prepaid card' Rule is activated ");
+	System.out.println("\n----------");
+	System.out.println("\nFor security reasons, daily withdrawl ranges between 50$ to 500$ only.\n");
+end
+	
+rule "Prepaid card summary" salience 6
+when 
+	$p: Prepaid()
+then 
+	System.out.println("\n'Prepaid card summary ' Rule is activated ");
+	System.out.println("\n----------");
+	System.out.println("\nPrepaid card Details :");
+	System.out.println("\nUser : " + $p.getUser().getName());
+	System.out.println("\nPrepaid card id : " + $p.getId());
+	System.out.println("\nPrepaid card verification code cvv2 : " + $p.getCvv2());
+	System.out.println("\nCurrent balance : " + $p.getUser().getBalance());
+	System.out.println("\nMinimum Quantity accepted in the card's balance : " + $p.getMinQty());
+	System.out.println("\nMaximum Quantity accepted in the card's balance : " + $p.getMaxQty());
+	System.out.println("\nDaily withdrawls between 50$ and 500$. \n");
+	
+end
+	
+
+
+
+
+
